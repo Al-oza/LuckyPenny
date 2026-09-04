@@ -13,7 +13,9 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -30,21 +32,25 @@ public class LuckyPennyPanel extends PluginPanel
 
     private final GameItemResolver resolver;
     private final GhommalLuckyPennyConfig config;
+    private final Runnable resetDataAction;
     private final JLabel totalChargesLabel = new JLabel();
     private final JLabel totalSavingsLabel = new JLabel();
     private final JPanel itemGrid = new JPanel();
     private final JPanel resourceList = new JPanel();
 
-    LuckyPennyPanel(GameItemResolver resolver, GhommalLuckyPennyConfig config)
+    LuckyPennyPanel(GameItemResolver resolver, GhommalLuckyPennyConfig config,
+            Runnable resetDataAction)
     {
         super(false);
         this.resolver = resolver;
         this.config = config;
+        this.resetDataAction = resetDataAction;
 
         setLayout(new BorderLayout());
         setBackground(ColorScheme.DARK_GRAY_COLOR);
         add(buildHeader(), BorderLayout.NORTH);
         add(buildBody(), BorderLayout.CENTER);
+        add(buildFooter(), BorderLayout.SOUTH);
     }
 
     private JPanel buildHeader()
@@ -121,6 +127,32 @@ public class LuckyPennyPanel extends PluginPanel
         text.add(totalSavingsLabel);
         card.add(text, BorderLayout.CENTER);
         return card;
+    }
+
+    private JPanel buildFooter()
+    {
+        JPanel footer = new JPanel(new BorderLayout());
+        footer.setBackground(ColorScheme.DARK_GRAY_COLOR);
+        footer.setBorder(BorderFactory.createEmptyBorder(6, 10, 10, 10));
+
+        JButton resetButton = new JButton("Reset data");
+        resetButton.setToolTipText("Permanently deletes all tracked Lucky Penny charges and savings.");
+        resetButton.addActionListener(event ->
+        {
+            int choice = JOptionPane.showConfirmDialog(
+                    this,
+                    "This will permanently delete all tracked Lucky Penny charges and savings.\nThis cannot be undone.",
+                    "Reset Lucky Penny data?",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+            );
+            if (choice == JOptionPane.YES_OPTION)
+            {
+                resetDataAction.run();
+            }
+        });
+        footer.add(resetButton, BorderLayout.CENTER);
+        return footer;
     }
 
     /** Must be called on RuneLite's client thread. */

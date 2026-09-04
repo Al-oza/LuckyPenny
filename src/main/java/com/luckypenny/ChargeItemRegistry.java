@@ -10,6 +10,7 @@ public class ChargeItemRegistry
     private static final List<ChargeItemDefinition> ITEMS = new ArrayList<>();
 
     private static final Map<String, Integer> DISPLAY_ITEM_IDS = Map.ofEntries(
+            Map.entry("Ash sanctifier", 25781),
             Map.entry("Celestial signet", 25545),
             Map.entry("Bonecrusher", 13116),
             Map.entry("Bonecrusher necklace", 22986),

@@ -16,7 +16,6 @@ public class ChargeItemRegistry
             Map.entry("Bonecrusher", 13116),
             Map.entry("Bonecrusher necklace", 22986),
             Map.entry("Celestial ring", 25541),
-            Map.entry("Celestial signet", 25545),
             Map.entry("Abyssal tentacle", 12006),
             Map.entry("Craw's bow", 22550),
             Map.entry("Webweaver bow", 27655),
@@ -112,7 +111,7 @@ public class ChargeItemRegistry
         add("Tumeken's shadow", ChargeCost.resources(of("Chaos rune", 5), of("Soul rune", 2)));
         add("Warped sceptre", ChargeCost.resources(of("Earth rune", 5), of("Chaos rune", 2)));
         // Eye of Ayak can alternatively be charged with 1x Demon tear instead of runes - this uses the rune cost as the default estimate.
-        add("Eye of Ayak", ChargeCost.resources(of("Chaos rune", 1), of("Death rune", 2)));
+        add("Eye of Ayak", ChargeCost.eyeOfAyak());
         add("Toxic blowpipe", ChargeCost.resources(of("Zulrah's scales", 2.0 / 3.0)));
         add("Blazing blowpipe", ChargeCost.resources(of("Zulrah's scales", 2.0 / 3.0)));
         add("Slayer's staff (e)", ChargeCost.amortised("Slayer's enchantment", 2500));

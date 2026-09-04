@@ -11,20 +11,31 @@ public interface GhommalLuckyPennyConfig extends Config
 	String GROUP = "ghommalluckypenny";
 	String INFERNAL_SECTION = "infernalToolCharging";
 	String SCEPTRE_SECTION = "pharaohsSceptreCharging";
+	String AYAK_SECTION = "ayakCharging";
 
 	@ConfigSection(
-			name = "Infernal tool charging",
+			name = "Infernal Tool Charging",
 			description = "Choose the resource used for each tool's 5,000-charge recharge",
 			position = 1
 	)
+	@SuppressWarnings("unused")
 	String infernalSection = INFERNAL_SECTION;
 
 	@ConfigSection(
-			name = "Pharaoh's sceptre charging",
+			name = "Pharaoh's Sceptre Charging",
 			description = "Choose the recharge artefact and Desert Diary tier",
 			position = 5
 	)
+	@SuppressWarnings("unused")
 	String sceptreSection = SCEPTRE_SECTION;
+
+	@ConfigSection(
+			name = "Eye of Ayak Charging",
+			description = "Choose the method for charging the powered staff",
+			position = 8
+	)
+	@SuppressWarnings("unused")
+	String ayakSection = AYAK_SECTION;
 
 	@ConfigItem(
 			keyName = "hideUnpricedItems",
@@ -96,6 +107,18 @@ public interface GhommalLuckyPennyConfig extends Config
 		return DesertDiary.NONE;
 	}
 
+	@ConfigItem(
+			keyName = "ayakCharge",
+			name = "Ayak Charge Method",
+			description = "Method of charging the Eye of Ayak.",
+			section = AYAK_SECTION,
+			position = 9
+	)
+	default AyakCharge ayakCharge()
+	{
+		return AyakCharge.RUNES;
+	}
+
 	enum InfernalAxeRecharge
 	{
 		DRAGON_AXE("Dragon axe"),
@@ -165,6 +188,30 @@ public interface GhommalLuckyPennyConfig extends Config
 		public String toString()
 		{
 			return itemName;
+		}
+	}
+
+	enum AyakCharge
+	{
+		RUNES("Runes"),
+		DEMON_TEAR("Demon tear");
+
+		private final String displayName;
+
+		AyakCharge(String displayName)
+		{
+			this.displayName = displayName;
+		}
+
+		boolean usesDemonTear()
+		{
+			return this == DEMON_TEAR;
+		}
+
+		@Override
+		public String toString()
+		{
+			return displayName;
 		}
 	}
 
@@ -242,4 +289,5 @@ public interface GhommalLuckyPennyConfig extends Config
 			return displayName;
 		}
 	}
+
 }

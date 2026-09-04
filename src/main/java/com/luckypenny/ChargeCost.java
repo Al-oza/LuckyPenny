@@ -119,6 +119,22 @@ public abstract class ChargeCost
                 of(config.infernalPickaxeRecharge().getItemName(), 1.0 / 5000)));
     }
 
+    public static ChargeCost eyeOfAyak()
+    {
+        return configured(config ->
+        {
+            if (config.ayakCharge().usesDemonTear())
+            {
+                return Collections.singletonList(of("Demon tear", 1));
+            }
+
+            return Arrays.asList(
+                    of("Chaos rune", 1),
+                    of("Death rune", 2)
+            );
+        });
+    }
+
     public static ChargeCost pharaohsSceptre()
     {
         return configured(config -> Collections.singletonList(of(
@@ -144,11 +160,6 @@ public abstract class ChargeCost
         private final String itemName;
         private final double quantity;
         private final Integer itemId;
-
-        ResourceQty(String itemName, double quantity)
-        {
-            this(itemName, quantity, null);
-        }
 
         ResourceQty(String itemName, double quantity, Integer itemId)
         {

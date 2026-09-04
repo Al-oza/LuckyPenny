@@ -6,6 +6,7 @@ import java.util.Map;
 final class ResourceItemRegistry
 {
     private static final Map<String, Integer> ITEM_IDS = Map.ofEntries(
+            Map.entry("Demon tear", 31111),
             Map.entry("Air rune", 556),
             Map.entry("Abyssal whip", 4151),
             Map.entry("Amulet of bounty", 21160),

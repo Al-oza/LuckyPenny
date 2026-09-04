@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.callback.ClientThread;
@@ -27,7 +26,6 @@ import net.runelite.client.util.Text;
         description = "Tracks charges and resources saved by Ghommal's lucky penny",
         tags = {"penny", "charges", "combat achievements", "savings", "ghommal"}
 )
-@Slf4j
 public class GhommalLuckyPennyPlugin extends Plugin
 {
     private static final Pattern SAVE_PATTERN =
@@ -75,7 +73,6 @@ public class GhommalLuckyPennyPlugin extends Plugin
 
         clientToolbar.addNavigation(navButton);
         refreshPanel();
-        clientThread.invoke(this::logPharaohsSceptrePrice);
         storage.load(this::onSavedCountsLoaded);
     }
 
@@ -121,7 +118,6 @@ public class GhommalLuckyPennyPlugin extends Plugin
         if (GhommalLuckyPennyConfig.GROUP.equals(event.getGroup()))
         {
             refreshPanel();
-            clientThread.invoke(this::logPharaohsSceptrePrice);
         }
     }
 
@@ -142,19 +138,6 @@ public class GhommalLuckyPennyPlugin extends Plugin
         {
             clientThread.invoke(() -> panel.rebuild(savedCounts));
         }
-    }
-
-    /** Low-frequency diagnostic for the configurable Pharaoh's sceptre cost. */
-    private void logPharaohsSceptrePrice()
-    {
-        GhommalLuckyPennyConfig.PharaohsSceptreArtefact artefact =
-                config.pharaohsSceptreArtefact();
-        long price = itemResolver.getPrice(artefact.getItemName(), artefact.getItemId());
-        double perCharge = (double) artefact.getQuantityPerRecharge()
-                / config.desertDiary().getChargesPerRecharge();
-
-        log.debug("Pharaoh's sceptre resource: {} (id {}), GE price {}, {} per charge",
-                artefact.getItemName(), artefact.getItemId(), price, perCharge);
     }
 
     private static BufferedImage loadToolbarIcon()

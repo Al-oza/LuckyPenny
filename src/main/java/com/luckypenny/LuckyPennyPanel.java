@@ -172,7 +172,16 @@ public class LuckyPennyPanel extends PluginPanel
         }
 
         List<ResourceData> sortedResources = new ArrayList<>(resources.values());
-        sortedResources.sort(Comparator.comparing(resource -> resource.itemName));
+        sortedResources.sort((first, second) ->
+        {
+            long firstGp = Math.round(first.quantity * first.price);
+            long secondGp = Math.round(second.quantity * second.price);
+
+            int byGp = Long.compare(secondGp, firstGp);
+            return byGp != 0
+                    ? byGp
+                    : first.itemName.compareTo(second.itemName);
+        });
         int finalTotalCharges = totalCharges;
         long finalTotalGp = totalGp;
 

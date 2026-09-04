@@ -6,29 +6,10 @@ import java.util.List;
 import java.util.Map;
 import static com.luckypenny.ChargeCost.of;
 
-/**
- * Every item the OSRS Wiki lists as charge-saving under Ghommal's lucky
- * penny (see https://oldschool.runescape.wiki/w/Ghommal%27s_lucky_penny),
- * plus a small number of costs that have been verified directly against
- * each item's own wiki page (its "Charging"/"Charges" section).
- * <p>
- * Entries marked {@link ChargeCost#UNKNOWN} are real, tracked items - they
- * just don't have a confirmed gp-per-charge cost yet. The panel still
- * counts and displays their saves, it just can't show a gp value for them.
- * To fill one in, open the item's wiki page, find the resources consumed
- * per charge/cast, and add a line using {@link ChargeCost#resources} or
- * {@link ChargeCost#amortised} (see the verified entries below for
- * examples). Item names only need to match what appears in the chat
- * message - GameItemResolver looks up the id/price/icon at runtime.
- */
 public class ChargeItemRegistry
 {
     private static final List<ChargeItemDefinition> ITEMS = new ArrayList<>();
 
-    /**
-     * Visual item IDs supplied for tracked items. These avoid ItemManager's
-     * name-and-price search when retrieving an inventory sprite.
-     */
     private static final Map<String, Integer> DISPLAY_ITEM_IDS = Map.ofEntries(
             Map.entry("Celestial signet", 25545),
             Map.entry("Bonecrusher", 13116),
@@ -122,30 +103,17 @@ public class ChargeItemRegistry
 
     static
     {
-
         add("Sanguinesti staff", ChargeCost.resources(of("Blood rune", 2)));
         add("Holy sanguinesti staff", ChargeCost.resources(of("Blood rune", 2)));
-
-        add("Trident of the seas", ChargeCost.resources(
-                of("Fire rune", 5), of("Chaos rune", 1), of("Coins", 10)));
-
-        add("Trident of the swamp", ChargeCost.resources(
-                of("Fire rune", 5), of("Chaos rune", 1), of("Death rune", 1), of("Zulrah's scales", 1)));
-
-        add("Tumeken's shadow", ChargeCost.resources(
-                of("Chaos rune", 5), of("Soul rune", 2)));
-
-        add("Warped sceptre", ChargeCost.resources(
-                of("Earth rune", 5), of("Chaos rune", 2)));
-
+        add("Trident of the seas", ChargeCost.resources(of("Fire rune", 5), of("Chaos rune", 1), of("Coins", 10)));
+        add("Trident of the swamp", ChargeCost.resources(of("Fire rune", 5), of("Chaos rune", 1), of("Death rune", 1), of("Zulrah's scales", 1)));
+        add("Tumeken's shadow", ChargeCost.resources(of("Chaos rune", 5), of("Soul rune", 2)));
+        add("Warped sceptre", ChargeCost.resources(of("Earth rune", 5), of("Chaos rune", 2)));
         // Eye of Ayak can alternatively be charged with 1x Demon tear instead of runes - this uses the rune cost as the default estimate.
-        add("Eye of Ayak", ChargeCost.resources(
-                of("Chaos rune", 1), of("Death rune", 2)));
-
+        add("Eye of Ayak", ChargeCost.resources(of("Chaos rune", 1), of("Death rune", 2)));
         add("Toxic blowpipe", ChargeCost.resources(of("Zulrah's scales", 2.0 / 3.0)));
         add("Blazing blowpipe", ChargeCost.resources(of("Zulrah's scales", 2.0 / 3.0)));
         add("Slayer's staff (e)", ChargeCost.amortised("Slayer's enchantment", 2500));
-
         add("Amulet of eternal glory", ChargeCost.FREE);
         add("Ash sanctifier", ChargeCost.amortised("Death rune", 10));
         add("Amulet of blood fury", ChargeCost.amortised("Blood shard", 10_000));
@@ -172,17 +140,11 @@ public class ChargeItemRegistry
         add("Chronicle", ChargeCost.resources(of("Teleport card",1)));
         add("Circlet of water", ChargeCost.resources(of("Water rune",5)));
         add("Dizana's quiver", ChargeCost.resources(of("Sunfire splinters",1)));
-
-
         add("Bonecrusher", ChargeCost.amortised("Ecto-token", 25));
         add("Bonecrusher necklace", ChargeCost.amortised("Ecto-token", 25));
         add("Celestial ring", ChargeCost.resources(of("Stardust", 1)));
         add("Celestial signet", ChargeCost.resources(of("Stardust", 1)));
-
         add("Arclight", ChargeCost.amortised("Ancient shard", 333));
-
-
-        // Crystal armour and equipment (degrade using Crystal shards)
         add("Blade of Saeldor", ChargeCost.amortised("Crystal shard", 100));
         add("Bow of Faerdhinen", ChargeCost.amortised("Crystal shard", 100));
         add("Crystal axe", ChargeCost.amortised("Crystal shard", 100));
@@ -197,18 +159,13 @@ public class ChargeItemRegistry
         add("Crystal shield", ChargeCost.resources(of("Crystal shard", 40.0 / 2_500)));
         add("Amulet of glory", ChargeCost.amortised("Amulet of glory(6)", 6), "Amulet of glory (t)");
         add("Echo boots", ChargeCost.amortised("Echo crystal", 6_000));
-        // Let's make a note that the enchanted lyre is annoying and I don't want to track it - add("Enchanted lyre", ChargeCost.UNKNOWN);
         add("Horn of Plenty", ChargeCost.resources(of("Gryphon feather",1)));
-
-        // Infernal tools
         add("Infernal axe", ChargeCost.infernalAxe());
         add("Infernal axe (or)", ChargeCost.infernalAxe());
         add("Infernal harpoon", ChargeCost.infernalHarpoon());
         add("Infernal harpoon (or)", ChargeCost.infernalHarpoon());
         add("Infernal pickaxe", ChargeCost.infernalPickaxe());
         add("Infernal pickaxe (or)", ChargeCost.infernalPickaxe());
-
-        // Jewellery
         add("Alchemist's amulet", ChargeCost.amortised("Amulet of chemistry", 10));
         add("Amulet of chemistry", ChargeCost.amortised("Amulet of chemistry", 5));
         add("Amulet of bounty", ChargeCost.amortised("Amulet of bounty", 10));
@@ -217,8 +174,7 @@ public class ChargeItemRegistry
         add("Burning amulet", ChargeCost.amortised("Burning amulet(5)", 5));
         add("Combat bracelet", ChargeCost.amortised("Combat bracelet(6)", 6));
         add("Cowbell amulet", ChargeCost.resources(of("Air rune", 1)));
-        add("Digsite pendant", ChargeCost.resources(
-                of("Ruby necklace", 1.0 / 5), of("Fire rune", 1), of("Cosmic rune", 1.0 / 5)));
+        add("Digsite pendant", ChargeCost.resources(of("Ruby necklace", 1.0 / 5), of("Fire rune", 1), of("Cosmic rune", 1.0 / 5)));
         add("Dodgy necklace", ChargeCost.amortised("Dodgy necklace", 10));
         add("Efaritay's aid", ChargeCost.amortised("Efaritay's aid", 200));
         add("Expeditious bracelet", ChargeCost.amortised("Expeditious bracelet", 30));
@@ -233,15 +189,9 @@ public class ChargeItemRegistry
         add("Ring of wealth", ChargeCost.amortised("Ring of wealth (5)", 5));
         add("Skills necklace", ChargeCost.amortised("Skills necklace(6)", 6));
         add("Xeric's talisman", ChargeCost.resources(of("Lizardman fang", 1)));
-
-        add("Pharaoh's sceptre (uncharged)", ChargeCost.pharaohsSceptre(),
-                "Pharaoh's sceptre");
+        add("Pharaoh's sceptre (uncharged)", ChargeCost.pharaohsSceptre(), "Pharaoh's sceptre");
         add("Sailors' amulet", ChargeCost.resources(of("Law rune", 0.1), of("Water rune", 1)));
         add("Strange old lockpick", ChargeCost.amortised("Strange old lockpick (full)", 50));
-
-
-        // Time-based degradation is intentionally not tracked: Amulet of the Damned,
-        // Slayer ring, Skull sceptre (i), and the Moons of Peril equipment.
     }
 
     /** Finds the registered definition matching a name captured from chat, or null. */
@@ -255,10 +205,5 @@ public class ChargeItemRegistry
             }
         }
         return null;
-    }
-
-    public static List<ChargeItemDefinition> all()
-    {
-        return Collections.unmodifiableList(ITEMS);
     }
 }

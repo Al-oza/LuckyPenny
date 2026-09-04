@@ -1,7 +1,6 @@
 package com.luckypenny;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import static com.luckypenny.ChargeCost.of;

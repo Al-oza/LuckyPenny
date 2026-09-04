@@ -35,14 +35,3 @@ These need time-based degradation handling or an additional player choice for
 their recharge resource. They may still be detected from the chat message, but
 they do not contribute a resource or GP value. This list is kept here so new
 cost support can be added deliberately rather than silently estimating a price.
-
-## Development
-
-Use Java 11 and run:
-
-```text
-./gradlew run
-```
-
-For development-client login, follow RuneLite's
-[Using Jagex Accounts instructions](https://github.com/runelite/runelite/wiki/Using-Jagex-Accounts).

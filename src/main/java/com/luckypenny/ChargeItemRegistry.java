@@ -12,9 +12,11 @@ public class ChargeItemRegistry
     private static final Map<String, Integer> DISPLAY_ITEM_IDS = Map.ofEntries(
             Map.entry("Ash sanctifier", 25781),
             Map.entry("Celestial signet", 25545),
+            Map.entry("Amulet of blood fury", 24780),
             Map.entry("Bonecrusher", 13116),
             Map.entry("Bonecrusher necklace", 22986),
             Map.entry("Celestial ring", 25541),
+            Map.entry("Celestial signet", 25545),
             Map.entry("Abyssal tentacle", 12006),
             Map.entry("Craw's bow", 22550),
             Map.entry("Webweaver bow", 27655),

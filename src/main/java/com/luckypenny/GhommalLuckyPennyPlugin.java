@@ -1,7 +1,11 @@
 package com.luckypenny;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -30,6 +34,9 @@ public class GhommalLuckyPennyPlugin extends Plugin
 {
     private static final Pattern SAVE_PATTERN =
             Pattern.compile("^Ghommal's luck saves a charge on your (.+)\\.$");
+    private static final String SAVED_COUNTS_KEY = "savedCounts";
+    private static final Type SAVED_COUNTS_TYPE =
+            new TypeToken<LinkedHashMap<String, Integer>>() { }.getType();
 
     @Inject
     private ClientToolbar clientToolbar;
@@ -41,17 +48,20 @@ public class GhommalLuckyPennyPlugin extends Plugin
     private ClientThread clientThread;
 
     @Inject
-    private LuckyPennyStorage storage;
+    private ConfigManager configManager;
+
+    @Inject
+    private Gson gson;
 
     @Inject
     private GhommalLuckyPennyConfig config;
 
-    private GameItemResolver itemResolver;
     private LuckyPennyPanel panel;
     private NavigationButton navButton;
 
     private final Map<String, Integer> savedCounts = new LinkedHashMap<>();
 
+    @SuppressWarnings("unused")
     @Provides
     GhommalLuckyPennyConfig provideConfig(ConfigManager configManager)
     {
@@ -61,8 +71,8 @@ public class GhommalLuckyPennyPlugin extends Plugin
     @Override
     protected void startUp()
     {
-        itemResolver = new GameItemResolver(itemManager);
-        panel = new LuckyPennyPanel(itemResolver, config);
+        GameItemResolver itemResolver = new GameItemResolver(itemManager);
+        panel = new LuckyPennyPanel(itemResolver, config, this::resetSavedCounts);
 
         navButton = NavigationButton.builder()
                 .tooltip("Ghommal's Lucky Penny")
@@ -72,8 +82,8 @@ public class GhommalLuckyPennyPlugin extends Plugin
                 .build();
 
         clientToolbar.addNavigation(navButton);
+        loadSavedCounts();
         refreshPanel();
-        storage.load(this::onSavedCountsLoaded);
     }
 
     @Override
@@ -83,10 +93,9 @@ public class GhommalLuckyPennyPlugin extends Plugin
         {
             clientToolbar.removeNavigation(navButton);
         }
-
-        storage.shutDown();
     }
 
+    @SuppressWarnings("unused")
     @Subscribe
     public void onChatMessage(ChatMessage event)
     {
@@ -108,10 +117,11 @@ public class GhommalLuckyPennyPlugin extends Plugin
         String key = definition != null ? definition.getDisplayName() : rawItemName;
 
         savedCounts.merge(key, 1, Integer::sum);
-        storage.save(savedCounts);
+        saveSavedCounts();
         refreshPanel();
     }
 
+    @SuppressWarnings("unused")
     @Subscribe
     public void onConfigChanged(ConfigChanged event)
     {
@@ -121,15 +131,57 @@ public class GhommalLuckyPennyPlugin extends Plugin
         }
     }
 
-    private void onSavedCountsLoaded(Map<String, Integer> loadedCounts)
+    private void loadSavedCounts()
     {
-        for (Map.Entry<String, Integer> entry : loadedCounts.entrySet())
+        String savedCountsJson = configManager.getConfiguration(
+                GhommalLuckyPennyConfig.GROUP,
+                SAVED_COUNTS_KEY
+        );
+        if (savedCountsJson == null || savedCountsJson.isEmpty())
         {
-            savedCounts.merge(entry.getKey(), entry.getValue(), Integer::sum);
+            return;
         }
 
-        storage.save(savedCounts);
-        refreshPanel();
+        try
+        {
+            Map<String, Integer> loadedCounts = gson.fromJson(savedCountsJson, SAVED_COUNTS_TYPE);
+            if (loadedCounts == null)
+            {
+                return;
+            }
+
+            for (Map.Entry<String, Integer> entry : loadedCounts.entrySet())
+            {
+                Integer count = entry.getValue();
+                if (entry.getKey() != null && count != null && count > 0)
+                {
+                    savedCounts.put(entry.getKey(), count);
+                }
+            }
+        }
+        catch (JsonParseException ignored)
+        {
+            // Ignore malformed saved data so the tracker can continue recording new savings.
+        }
+    }
+
+    private void saveSavedCounts()
+    {
+        configManager.setConfiguration(
+                GhommalLuckyPennyConfig.GROUP,
+                SAVED_COUNTS_KEY,
+                gson.toJson(savedCounts, SAVED_COUNTS_TYPE)
+        );
+    }
+
+    private void resetSavedCounts()
+    {
+        clientThread.invoke(() ->
+        {
+            savedCounts.clear();
+            saveSavedCounts();
+            refreshPanel();
+        });
     }
 
     private void refreshPanel()

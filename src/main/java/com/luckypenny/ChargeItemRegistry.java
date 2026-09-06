@@ -31,7 +31,7 @@ public class ChargeItemRegistry
             Map.entry("Sanguinesti staff", 22323),
             Map.entry("Holy sanguinesti staff", 25731),
             Map.entry("Scythe of Vitur", 22325),
-            Map.entry("Sanguine scythe of Vitur", 22664),
+            Map.entry("Sanguine scythe of Vitur", 25739),
             Map.entry("Tonalztics of Ralos", 28922),
             Map.entry("Toxic blowpipe", 12926),
             Map.entry("Slayer's staff (e)", 21255),

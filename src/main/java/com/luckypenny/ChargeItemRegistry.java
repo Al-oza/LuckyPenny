@@ -40,6 +40,7 @@ public class ChargeItemRegistry
             Map.entry("Trident of the swamp", 12899),
             Map.entry("Tumeken's shadow", 27275),
             Map.entry("Venator bow", 27610),
+            Map.entry("Echo venator bow", 30434),
             Map.entry("Chronicle", 13660),
             Map.entry("Circlet of water", 26969),
             Map.entry("Blade of Saeldor", 23995),
@@ -138,6 +139,7 @@ public class ChargeItemRegistry
         add("Bone staff", ChargeCost.resources(of("Chaos rune", 1)));
         add("Tonalztics of Ralos", ChargeCost.resources(of("Sunfire splinters",1)));
         add("Venator bow", ChargeCost.resources(of("Ancient essence",1)));
+        add("Echo Venator bow", ChargeCost.resources(of("Ancient essence",1)));
         add("Chronicle", ChargeCost.resources(of("Teleport card",1)));
         add("Circlet of water", ChargeCost.resources(of("Water rune",5)));
         add("Dizana's quiver", ChargeCost.resources(of("Sunfire splinters",1)));

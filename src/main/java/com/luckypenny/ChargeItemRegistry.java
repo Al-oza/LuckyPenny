@@ -94,7 +94,10 @@ public class ChargeItemRegistry
             Map.entry("Tome of Earth", 30064),
             Map.entry("Tome of Fire", 20714),
             Map.entry("Tome of Water", 25574),
-            Map.entry("Blazing blowpipe", 28688)
+            Map.entry("Blazing blowpipe", 28688),
+            Map.entry("Archivist's folio", 34723),
+            Map.entry("Obligator", 34715),
+            Map.entry("Zorya's tome", 35725)
     );
 
     private static void add(String name, ChargeCost cost, String... aliases)
@@ -193,6 +196,9 @@ public class ChargeItemRegistry
         add("Pharaoh's sceptre (uncharged)", ChargeCost.pharaohsSceptre(), "Pharaoh's sceptre");
         add("Sailors' amulet", ChargeCost.resources(of("Law rune", 0.1), of("Water rune", 1)));
         add("Strange old lockpick", ChargeCost.amortised("Strange old lockpick (full)", 50));
+        add("Archivist's folio", ChargeCost.amortised("Ascension shards",5));
+        add("Obligator", ChargeCost.resources(of("Ascension shards",0.1), of("Nature rune", 2),of("Death rune", 2)));
+        add("Zorya's tome", ChargeCost.resources(of("Astral rune",3), of("Nature rune", 2)));
     }
 
     /** Finds the registered definition matching a name captured from chat, or null. */

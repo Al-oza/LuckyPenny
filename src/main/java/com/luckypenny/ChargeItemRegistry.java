@@ -199,7 +199,7 @@ public class ChargeItemRegistry
         add("Sailors' amulet", ChargeCost.resources(of("Law rune", 0.1), of("Water rune", 1)));
         add("Strange old lockpick", ChargeCost.amortised("Strange old lockpick (full)", 50));
         add("Archivist's folio", ChargeCost.amortised("Ascension shards",5));
-        add("Obligator", ChargeCost.resources(of("Ascension shards",0.1), of("Nature rune", 2),of("Death rune", 2)));
+        add("Obligator", ChargeCost.resources(of("Ascension shards", (double) 1/30), of("Nature rune", 2),of("Death rune", 2)));
         add("Zorya's tome", ChargeCost.resources(of("Astral rune",3), of("Nature rune", 2)));
     }
 
